@@ -8,10 +8,10 @@
     - name: run show commands on the router
       ios_command:
         commands:
-          - show version
-          - show clock
-          - show proc cpu | ex 0.00
           - show ip int br
+          - show proc cpu | ex 0.00
+          - show clock
+          - show version
       register: output
 
     - name: print output
