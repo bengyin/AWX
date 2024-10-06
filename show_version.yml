@@ -5,13 +5,13 @@
   gather_facts: false
 
   tasks:
-    - name: run show version on the routers
+    - name: run show commands on the router
       ios_command:
         commands:
-        - show version
-        - show clock
-        - show proc cpu | ex 0.00
-        - show ip int br
+          - show version
+          - show clock
+          - show proc cpu | ex 0.00
+          - show ip int br
       register: output
 
     - name: print output
