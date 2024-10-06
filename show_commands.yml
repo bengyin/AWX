@@ -1,0 +1,19 @@
+---
+
+- name: Cisco show commands example
+  hosts: "{{ network_device }}"
+  gather_facts: false
+
+  tasks:
+    - name: run show commands on the router
+      ios_command:
+        commands:
+          - show ip int br
+          - show proc cpu | ex 0.00
+          - show clock
+          - show version
+      register: output
+
+    - name: print output
+      debug:
+        var: output.stdout_lines
