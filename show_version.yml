@@ -1,7 +1,7 @@
 ---
 
 - name: Cisco show version example
-  hosts: sparks04
+  hosts: RT1
   gather_facts: false
 
   tasks:
@@ -16,7 +16,7 @@
 
 
 - name: Cisco show clock
-  hosts: sparks04
+  hosts: RT1
   gather_facts: false
 
   tasks:
@@ -31,7 +31,7 @@
 
 
 - name: Cisco show proc cpu
-  hosts: sparks04
+  hosts: RT1
   gather_facts: false
 
   tasks:
