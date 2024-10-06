@@ -1,46 +1,21 @@
 ---
 
-- name: Cisco show version example
+- name: Cisco show commands example
   hosts: "{{ network_device }}"
   gather_facts: false
 
   tasks:
     - name: run show version on the routers
       ios_command:
-        commands: show version
+        commands:
+        - show version
+        - show clock
+        - show proc cpu | ex 0.00
+        - show ip int br
       register: output
 
     - name: print output
       debug:
         var: output.stdout_lines
 
-
-- name: Cisco show clock
-  hosts: "{{ network_device }}"
-  gather_facts: false
-
-  tasks:
-    - name: run show clock
-      ios_command:
-        commands: show clock
-      register: output1
-
-    - name: print output1
-      debug:
-        var: output1.stdout_lines
-
-
-- name: Cisco show proc cpu
-  hosts: "{{ network_device }}"
-  gather_facts: false
-
-  tasks:
-    - name: run show proc cpu
-      ios_command:
-        commands: show proc cpu | ex 0.00
-      register: output2
-
-    - name: print output2
-      debug:
-        var: output2.stdout_lines
 
