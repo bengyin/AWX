@@ -27,14 +27,14 @@
       ansible.builtin.debug:
         msg: "{{ device_uptime }}"
 
-    - name: collect uptime using ansible.utils.cli_parse
-      ansible.utils.cli_parse:
-        command: show version
-        parser:
-          name: ansible.utils.textfsm
-          template_path: cisco_ios_uptime.textfsm
-      register: uptime
+#     - name: collect uptime using ansible.utils.cli_parse
+#       ansible.utils.cli_parse:
+#         command: show version
+#         parser:
+#           name: ansible.utils.textfsm
+#           template_path: cisco_ios_uptime.textfsm
+#       register: uptime
 
-    - name: print uptime using ansible.utils.textfsm
-      debug:
-        msg: "{{ uptime.parsed }}"
+#     - name: print uptime using ansible.utils.textfsm
+#       debug:
+#         msg: "{{ uptime.parsed }}"
