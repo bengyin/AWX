@@ -1,6 +1,6 @@
 ---
 - name: show commands on Cisco IOS-XE
-  hosts: {{ network_device }}
+  hosts: "{{ network_device }}"
   ignore_errors: true
   gather_facts: false
 
