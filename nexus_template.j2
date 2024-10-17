@@ -1,0 +1,21 @@
+hostname {{ ansible_net_hostname }}
+
+clock timezone SGT 8 0
+
+ip domain-lookup
+ip name-server 8.8.8.8
+ip access-list sparks-mgmt
+  10 permit ip 192.168.254.1/32 any 
+  20 permit ip 192.168.255.1/32 any 
+ip access-list sparks-snmp
+  10 permit ip 192.168.254.1/32 any 
+  20 permit ip 192.168.255.1/32 any 
+
+ntp server time-a-g.nist.gov use-vrf default
+ntp server time.google.com prefer use-vrf default
+
+{% for i in range(16) %}
+  interface eth1/{{ i+1 }}
+    shutdown
+    exit
+{% endfor %}
