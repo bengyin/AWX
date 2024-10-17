@@ -1,0 +1,19 @@
+---
+
+- name: Cisco Nexus Configuration
+  hosts: {{ network_device }}
+  ignore_errors: true
+  gather_facts: true
+
+  tasks:
+    - name: Add Nexus config with Jinja template file
+      cisco.nxos.nxos_config:
+        src: nexus_template.j2
+        replace: line
+      register: output
+
+    - name: print changes and updates
+      debug:
+#         var: output.updates
+        msg: "{{ output.updates if output.changed else 'No changes made.' }}"
+#       when: output.changed
