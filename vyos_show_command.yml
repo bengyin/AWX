@@ -1,0 +1,27 @@
+---
+
+- name: VyOS show command
+  hosts: ubnt01
+  ignore_errors: true
+  gather_facts: false
+  
+  tasks:
+    - name: run show command
+      vyos_command:
+        commands:
+        - show version
+  #       - show date
+  #       - show interfaces
+      register: output
+
+#     - name: print output
+#       debug:
+#         msg: "{{ output.stdout_lines }}"
+
+    - name: parse show version with parse_cli_textfsm
+      ansible.builtin.set_fact:
+        device_version: "{{ output.stdout[0] | parse_cli_textfsm('ubiquiti_edgerouter_show_version.textfsm') }}"
+
+    - name: print version with parse_cli_textfsm
+      ansible.builtin.debug:
+        msg: "{{ device_version }}"
