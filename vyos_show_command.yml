@@ -1,7 +1,7 @@
 ---
 
 - name: VyOS show command
-  hosts: ubnt01
+  hosts: "{{ network_device }}"
   ignore_errors: true
   gather_facts: false
   
