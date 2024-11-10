@@ -1,11 +1,11 @@
 ---
-name: Playbook Test
-hosts: localhost
+- name: Playbook Test
+  hosts: localhost
 
-vars:
-  var_one: Hello
-  var_two: World!
-  var_three: "{{ var_one }} {{ var_two }}"
+  vars:
+    var_one: Hello
+    var_two: World!
+    var_three: "{{ var_one }} {{ var_two }}"
 
   tasks:
   - name: print Hello World
