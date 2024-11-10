@@ -7,7 +7,7 @@ vars:
   var_two: World!
   var_three: "{{ var_one }} {{ var_two }}"
 
-tasks:
+  tasks:
   - name: print Hello World
     debug:
       msg: "{{ var_three }}"
