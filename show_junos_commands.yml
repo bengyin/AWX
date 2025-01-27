@@ -1,0 +1,19 @@
+---
+
+- name: show junos example
+  hosts: Junos_Routers
+  roles:
+    - Juniper.junos
+  gather_facts: false
+  ignore_errors: True
+
+  tasks:
+    - name: show junos example
+      juniper_junos_command:
+        commands:
+         - "show version"
+      register: output
+
+    - name: print result
+      debug:
+        var: output.stdout_lines
