@@ -1,7 +1,7 @@
 ---
 
 - name: show junos example
-  hosts: Junos_Routers
+  hosts: "{{ network_device }}"
   gather_facts: false
   ignore_errors: True
 
