@@ -2,16 +2,14 @@
 
 - name: show junos example
   hosts: Junos_Routers
-  roles:
-    - Juniper.junos
   gather_facts: false
   ignore_errors: True
 
   tasks:
     - name: show junos example
-      juniper_junos_command:
+      junipernetworks.junos.junos_facts:
         commands:
-         - "show version"
+        - "show version"
       register: output
 
     - name: print result
