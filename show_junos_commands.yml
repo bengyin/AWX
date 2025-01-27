@@ -7,7 +7,7 @@
 
   tasks:
     - name: show junos example
-      junipernetworks.junos.junos_facts:
+      junipernetworks.junos.junos_command:
         commands:
         - "show version"
       register: output
