@@ -17,7 +17,7 @@
         var: output.stdout_lines
 
     - name: collect junos facts
-      junipernetworks.junos.junos_facts:
+      junos_facts:
       register: output1
       
     - name: print model and version
