@@ -15,3 +15,12 @@
     - name: print result
       debug:
         var: output.stdout_lines
+
+    - name: collect junos facts
+      junipernetworks.junos.junos_facts:
+      register: output1
+      
+    - name: print model and version
+      debug:
+        msg: "Model: {{ output1.ansible_facts.ansible_net_model }} , Junos: {{ output1.ansible_facts.ansible_net_version }}"
+        
