@@ -17,7 +17,7 @@
 
     - name: print show version with parse_cli_textfsm
       ansible.builtin.debug:
-        msg: "{{ device_version_info }}"
+        msg: "version = {{ device_version_info[0].VERSION }}"
 
     - name: parse show version with parse_cli_textfsm
       ansible.builtin.set_fact:
@@ -25,7 +25,7 @@
 
     - name: print uptime with parse_cli_textfsm
       ansible.builtin.debug:
-        msg: "uptime = {{ device_version_info[0].UPTIME }}"
+        msg: "uptime = {{ device_uptime[0].UPTIME }}"
 
 #     - name: collect uptime using ansible.utils.cli_parse
 #       ansible.utils.cli_parse:
