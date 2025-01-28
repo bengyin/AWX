@@ -13,7 +13,7 @@
 
     - name: parse show version with parse_cli_textfsm
       ansible.builtin.set_fact:
-        device_version_info: "{{ output.stdout[0] | parse_cli_textfsm('cisco_ios_show_version.textfsm') }}"
+        device_version_info: "{{ output.output | join('\n') | parse_cli_textfsm('cisco_ios_show_version.textfsm') }}"
 
     - name: print show version with parse_cli_textfsm
       ansible.builtin.debug:
