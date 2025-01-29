@@ -15,26 +15,22 @@
       ansible.builtin.set_fact:
         device_version_info: "{{ output.stdout[0] | parse_cli_textfsm('cisco_ios_show_version.textfsm') }}"
 
-    - name: print show version with parse_cli_textfsm
+    - name: print version
       ansible.builtin.debug:
         msg: "version = {{ device_version_info[0].VERSION }}"
 
-#     - name: parse show version with parse_cli_textfsm
-#       ansible.builtin.set_fact:
-#         device_uptime: "{{ output.stdout[0] | parse_cli_textfsm('cisco_ios_show_version.textfsm') }}"
-
-    - name: print uptime with parse_cli_textfsm
+    - name: print uptime
       ansible.builtin.debug:
         msg: "uptime = {{ device_version_info[0].UPTIME }}"
 
-#     - name: collect uptime using ansible.utils.cli_parse
-#       ansible.utils.cli_parse:
-#         command: show version
-#         parser:
-#           name: ansible.utils.textfsm
-#           template_path: cisco_ios_uptime.textfsm
-#       register: uptime
+    - name: collect show version using ansible.utils.cli_parse
+      ansible.utils.cli_parse:
+        command: show version
+        parser:
+          name: ansible.utils.textfsm
+          template_path: cisco_ios_show_version.textfsm
+      register: output1
 
-#     - name: print uptime using ansible.utils.textfsm
-#       debug:
-#         msg: "{{ uptime.parsed }}"
+    - name: print uptime using ansible.utils.textfsm
+      debug:
+        msg: "{{ output1 }}"
