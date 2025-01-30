@@ -31,6 +31,6 @@
 #           template_path: cisco_ios_show_version.textfsm
 #       register: output1
 
-    - name: print uptime using ansible.utils.textfsm
-      debug:
-        msg: "{{ output1 }}"
+#     - name: print uptime using ansible.utils.textfsm
+#       debug:
+#         msg: "{{ output1 }}"
