@@ -20,7 +20,7 @@
 
     - name: parse show version with parse_cli_textfsm
       ansible.builtin.set_fact:
-        device_version: "{{ output.stdout[0] | join('\n') | parse_cli_textfsm('ubiquiti_edgerouter_show_version.textfsm') }}"
+        device_version: "{{ output.stdout | join('\n') | parse_cli_textfsm('ubiquiti_edgerouter_show_version.textfsm') }}"
 
     - name: print version with parse_cli_textfsm
       ansible.builtin.debug:
