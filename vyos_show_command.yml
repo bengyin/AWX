@@ -16,7 +16,7 @@
 
     - name: print output
       debug:
-        msg: "{{ output.stdout_lines }}"
+        var: output
 
     - name: parse show version with parse_cli_textfsm
       ansible.builtin.set_fact:
