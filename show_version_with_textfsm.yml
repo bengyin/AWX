@@ -23,13 +23,13 @@
       ansible.builtin.debug:
         msg: "uptime = {{ device_version_info[0].UPTIME }}"
 
-    - name: collect show version using ansible.utils.cli_parse
-      ansible.utils.cli_parse:
-        command: show version
-        parser:
-          name: ansible.utils.textfsm
-          template_path: cisco_ios_show_version.textfsm
-      register: output1
+#     - name: collect show version using ansible.utils.cli_parse
+#       ansible.utils.cli_parse:
+#         command: show version
+#         parser:
+#           name: ansible.utils.textfsm
+#           template_path: cisco_ios_show_version.textfsm
+#       register: output1
 
     - name: print uptime using ansible.utils.textfsm
       debug:
