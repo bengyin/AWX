@@ -14,9 +14,9 @@
   #       - show interfaces
       register: output
 
-#     - name: print output
-#       debug:
-#         msg: "{{ output.stdout_lines }}"
+    - name: print output
+      debug:
+        msg: "{{ output.stdout_lines }}"
 
     - name: parse show version with parse_cli_textfsm
       ansible.builtin.set_fact:
