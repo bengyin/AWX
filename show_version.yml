@@ -6,7 +6,7 @@
 
   tasks:
     - name: run show commands on the router
-      cisco.ios.ios_command:
+      ios_command:
         commands:
 #           - show ip int br
 #           - show proc cpu | ex 0.00
