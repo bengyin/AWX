@@ -6,22 +6,40 @@
   gather_facts: false
   
   tasks:
-    - name: run show command
+    - name: show version
       vyos_command:
         commands:
         - show version
-  #       - show date
-  #       - show interfaces
-      register: output
+      register: output1
 
-    - name: print output
-      debug:
-        var: output
+#     - name: print output
+#       debug:
+#         msg: "{{ output1.stdout_lines }}"
 
     - name: parse show version with parse_cli_textfsm
       ansible.builtin.set_fact:
-        device_version: "{{ output.stdout[0] | parse_cli_textfsm('ubiquiti_edgerouter_show_version.textfsm') }}"
+        device_version: "{{ output1.stdout[0] | parse_cli_textfsm('ubiquiti_edgerouter_show_version.textfsm') }}"
 
-    - name: print version with parse_cli_textfsm
+    - name: print show version with parse_cli_textfsm
       ansible.builtin.debug:
-        msg: "{{ device_version }}"
+#         msg: "{{ device_version }}"
+        msg: "Version: {{ device_version[0].VERSION }}, Uptime: {{ device_version[0].UPTIME }}"
+
+    - name: show nat rules
+      vyos_command:
+        commands:
+        - show nat rules
+      register: output2
+
+    - name: print output2
+      debug:
+        msg: "{{ output2.stdout_lines }}"
+
+    - name: parse show nat rules with parse_cli_textfsm
+      ansible.builtin.set_fact:
+        nat_rules: "{{ output2.stdout[0] | parse_cli_textfsm('ubiquiti_edgerouter_show_nat_rules.textfsm') }}"
+
+    - name: print nat rules with parse_cli_textfsm
+      ansible.builtin.debug:
+        msg: "{{ nat_rules }}"
+#         msg: "Version: {{ nat_rules[0].VERSION }}, Uptime: {{ nat_rules[0].UPTIME }}"
