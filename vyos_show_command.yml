@@ -7,7 +7,7 @@
   
   tasks:
     - name: show version
-      vyos_command:
+      vyos.vyos.vyos_command:
         commands:
         - show version
       register: output1
@@ -26,7 +26,7 @@
         msg: "Version: {{ device_version[0].VERSION }}, Uptime: {{ device_version[0].UPTIME }}"
 
     - name: show nat rules
-      vyos_command:
+      vyos.vyos.vyos_command:
         commands:
         - show nat rules
       register: output2
