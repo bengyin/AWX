@@ -1,0 +1,51 @@
+---
+
+- name: Update and upgrade Debian-based systems with PiHole updateGravity
+  hosts: raspberrypi
+  become: true
+  gather_facts: false
+  ignore_errors: true
+
+  tasks:
+    - name: sudo apt update
+      apt:
+        update_cache: yes
+      register: output1
+
+    - name: print sudo apt update status
+      ansible.builtin.debug:
+        var: output1
+      when: output1.changed
+
+    - name: sudo apt upgrade
+      apt:
+        upgrade: dist
+      register: output2
+
+    - name: print sudo apt upgrade status
+      ansible.builtin.debug:
+        var: output2.stdout_lines
+      when: output2.changed
+
+    - name: sudo apt autoremove
+      apt:
+        autoremove: yes
+        purge: true
+      register: output3
+
+    - name: print sudo apt autoremove status
+      ansible.builtin.debug:
+        var: output3.stdout_lines
+      when: output3.changed
+
+    - name: sudo pihole updateGravity
+      ansible.builtin.command:
+        argv:
+          - pihole
+          - updateGravity
+      become: yes
+      register: output4
+
+    - name: print sudo pihole updateGravity status
+      ansible.builtin.debug:
+        var: output4.stdout_lines
