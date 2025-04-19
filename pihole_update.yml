@@ -1,7 +1,7 @@
 ---
 
 - name: Update and upgrade Debian-based systems with PiHole updateGravity
-  hosts: raspberrypi
+  hosts: "{{ network_device }}"
   become: true
   gather_facts: false
   ignore_errors: true
