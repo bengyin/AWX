@@ -1,7 +1,7 @@
 ---
 
 - name: Execute Linux commands
-  hosts: {{ network_device }}
+  hosts: "{{ network_device }}"
   become: true
   gather_facts: false
   ignore_errors: true
