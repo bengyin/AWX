@@ -1,0 +1,42 @@
+---
+
+- name: Execute Linux commands
+  hosts: {{ network_device }}
+  become: true
+  gather_facts: false
+  ignore_errors: true
+
+  tasks:
+    - name: Execute cat /etc/os-release
+      ansible.builtin.command:
+        argv:
+          - cat
+          - /etc/os-release
+#       become: yes
+      register: output1
+
+    - name: print cat /etc/os-release output
+      ansible.builtin.debug:
+        var: output1.stdout_lines
+
+    - name: Execute df -h
+      ansible.builtin.command:
+        argv:
+          - df
+          - -h
+#       become: yes
+      register: output2
+
+    - name: print df -h output
+      ansible.builtin.debug:
+        var: output2.stdout_lines
+
+    - name: Execute a bash script
+      ansible.builtin.shell: /home/bengyin/show_system.sh
+      args:
+        executable: /usr/bin/bash
+      register: output3
+
+    - name: print bash script output
+      ansible.builtin.debug:
+        var: output3.stdout_lines
