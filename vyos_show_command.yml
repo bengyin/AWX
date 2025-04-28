@@ -6,7 +6,7 @@
   gather_facts: false
   
   tasks:
-    - name: show version
+    - name: vyos show version
       vyos.vyos.vyos_command:
         commands:
         - show version
