@@ -1,0 +1,149 @@
+---
+
+# - name: Define Global Variables
+#   hosts: all
+#   ignore_errors: true
+#   gather_facts: false
+
+#   vars:
+#     CoreRouter: "SPARKS001-CORE-01"
+#     CoreSwitch: "SPARKS-CORE10G-01"
+
+
+- name: Nexus show ip arp
+  hosts: SPARKS001-CORE-01
+  ignore_errors: true
+  gather_facts: false
+
+#   vars:
+#     ipaddress: "103.249.161.176"
+#     ipaddress: "103.249.161.231"
+
+  tasks:
+    - name: Nexus show ip arp {{ ipaddress }}
+      nxos_command:
+        commands:
+        - show ip arp {{ ipaddress }}
+      register: output
+
+#     - name: print output
+#       debug:
+#         var: output.stdout_lines
+
+    - name: parse show ip arp with parse_cli_textfsm
+      ansible.builtin.set_fact:
+        device_arp: "{{ output.stdout[0] | parse_cli_textfsm('/home/lws/ansible/SG/playbook/cisco_nxos_show_ip_arp.textfsm') }}"
+
+    - name: set variable device_mac
+      ansible.builtin.set_fact:
+        device_mac: "{{ device_arp[0].MAC_ADDRESS }}"
+
+    - name: print device_mac entry
+      ansible.builtin.debug:
+        msg: "MAC Address: {{ device_mac }}"
+
+
+- name: Nexus show mac address-table address
+  hosts: SPARKS-CORE10G-01
+  ignore_errors: true
+  gather_facts: false
+
+  vars:
+    CoreRouter: "SPARKS001-CORE-01"
+
+  tasks:
+#     - name: Nexus show mac address-table address {{ hostvars['SPARKS001-CORE-01']['device_mac'] }}
+    - name: Nexus show mac address-table address {{ hostvars[CoreRouter]['device_mac'] }}
+      nxos_command:
+        commands:
+#         - show mac address-table address {{ hostvars['SPARKS001-CORE-01']['device_mac'] }}
+        - show mac address-table address {{ hostvars[CoreRouter]['device_mac'] }}
+      register: output1
+
+#     - name: print output1
+#       debug:
+#         var: output1.stdout_lines
+
+    - name: parse show mac address-table with parse_cli_textfsm
+      ansible.builtin.set_fact:
+        device_macaddresstable: "{{ output1.stdout[0] | parse_cli_textfsm('/home/lws/ansible/SG/playbook/cisco_nxos_show_mac_address-table.textfsm') }}"
+
+    - name: set variable device_port
+      ansible.builtin.set_fact:
+        device_port: "{{ device_macaddresstable[0].PORTS }}"
+
+    - name: print device_port entry
+      ansible.builtin.debug:
+        msg: "Uplink Port: {{ device_port }}"
+
+    - name: Nexus show interface {{ device_port }}
+      nxos_command:
+        commands:
+        - show interface {{ device_port }}
+      register: output2
+
+    - name: parse show interface with parse_cli_textfsm
+      ansible.builtin.set_fact:
+        device_interface: "{{ output2.stdout[0] | parse_cli_textfsm('/home/lws/ansible/SG/playbook/cisco_nxos_show_interface.textfsm') }}"
+
+    - name: set variable device_interface_desc
+      ansible.builtin.set_fact:
+        device_interface_desc: "{{ device_interface[0].DESCRIPTION }}"
+
+    - name: print device_interface_desc entry
+      ansible.builtin.debug:
+        msg: "Edge Switch: {{ device_interface_desc }}"
+
+#    - name: Nexus show run interface {{ device_port }}
+#       nxos_command:
+#         commands:
+#         - show run interface {{ device_port }}
+#       register: output2
+
+#     - name: print show run interface
+#       ansible.builtin.debug:
+#         var: output2.stdout_lines
+
+
+- name: Nexus show mac address-table address
+#   hosts: "{{ hostvars['SPARKS-CORE10G-01']['device_interface_desc'] }}"
+  hosts: "{{ hostvars[CoreSwitch]['device_interface_desc'] }}"
+  ignore_errors: true
+  gather_facts: false
+
+  vars:
+    CoreRouter: "SPARKS001-CORE-01"
+    CoreSwitch: "SPARKS-CORE10G-01"
+
+  tasks:
+    - name: Nexus show mac address-table address {{ hostvars[CoreRouter]['device_mac'] }}
+      nxos_command:
+        commands:
+        - show mac address-table address {{ hostvars[CoreRouter]['device_mac'] }}
+      register: output3
+
+    - name: print output
+      debug:
+        var: output3.stdout_lines
+
+    - name: parse show mac address-table with parse_cli_textfsm
+      ansible.builtin.set_fact:
+        device_macaddresstable: "{{ output3.stdout[0] | parse_cli_textfsm('/home/lws/ansible/SG/playbook/cisco_nxos_show_mac_address-table.textfsm') }}"
+
+    - name: set variable device_port
+      ansible.builtin.set_fact:
+        device_port: "{{ device_macaddresstable[0].PORTS }}"
+
+    - name: print device_port entry
+      ansible.builtin.debug:
+        msg: "Edge Switch Interface: {{ device_port }}"
+
+    - name: Nexus show run interface {{ device_port }}
+      nxos_command:
+        commands:
+        - show run interface {{ device_port }}
+      register: output4
+
+    - name: print show run interface {{ device_port }}
+      ansible.builtin.debug:
+        var: output4.stdout_lines
