@@ -1,23 +1,26 @@
 ---
 
-# - name: Define Global Variables
-#   hosts: all
-#   ignore_errors: true
-#   gather_facts: false
-
-#   vars:
-#     CoreRouter: "SPARKS001-CORE-01"
-#     CoreSwitch: "SPARKS-CORE10G-01"
-
+- name: Define global variables
+  hosts: localhost
+  ignore_errors: true
+  gather_facts: false
+  tasks:
+    - name: set global variables
+      ansible.builtin.set_fact:
+        CoreRouter: "SPARKS001-CORE-01"
+        CoreSwitch: "SPARKS-CORE10G-01"
+      delegate_to: localhost
+      run_once: true
 
 - name: Nexus show ip arp
-  hosts: SPARKS001-CORE-01
+  hosts: "{{ hostvars['localhost']['CoreRouter'] }}"
+#   hosts: SPARKS001-CORE-01
   ignore_errors: true
   gather_facts: false
 
 #   vars:
-#     ipaddress: "1.2.3.4"
-#     ipaddress: "5.6.7.8
+#     ipaddress: "103.249.161.176"
+#     ipaddress: "103.249.161.231"
 
   tasks:
     - name: Nexus show ip arp {{ ipaddress }}
@@ -44,20 +47,23 @@
 
 
 - name: Nexus show mac address-table address
-  hosts: SPARKS-CORE10G-01
+  hosts: "{{ hostvars['localhost']['CoreSwitch'] }}"
+#   hosts: SPARKS-CORE10G-01
   ignore_errors: true
   gather_facts: false
 
-  vars:
-    CoreRouter: "SPARKS001-CORE-01"
+#   vars:
+#     CoreRouter: "SPARKS001-CORE-01"
 
   tasks:
+    - name: Nexus show mac address-table address {{ hostvars[hostvars['localhost']['CoreRouter']]['device_mac'] }}
 #     - name: Nexus show mac address-table address {{ hostvars['SPARKS001-CORE-01']['device_mac'] }}
-    - name: Nexus show mac address-table address {{ hostvars[CoreRouter]['device_mac'] }}
+#     - name: Nexus show mac address-table address {{ hostvars[CoreRouter]['device_mac'] }}
       nxos_command:
         commands:
+        - show mac address-table address {{ hostvars[hostvars['localhost']['CoreRouter']]['device_mac'] }}
 #         - show mac address-table address {{ hostvars['SPARKS001-CORE-01']['device_mac'] }}
-        - show mac address-table address {{ hostvars[CoreRouter]['device_mac'] }}
+#         - show mac address-table address {{ hostvars[CoreRouter]['device_mac'] }}
       register: output1
 
 #     - name: print output1
@@ -106,20 +112,23 @@
 
 
 - name: Nexus show mac address-table address
+  hosts: "{{ hostvars[hostvars['localhost']['CoreSwitch']]['device_interface_desc'] }}"
 #   hosts: "{{ hostvars['SPARKS-CORE10G-01']['device_interface_desc'] }}"
-  hosts: "{{ hostvars[CoreSwitch]['device_interface_desc'] }}"
+#   hosts: "{{ hostvars[CoreSwitch]['device_interface_desc'] }}"
   ignore_errors: true
   gather_facts: false
 
-  vars:
-    CoreRouter: "SPARKS001-CORE-01"
-    CoreSwitch: "SPARKS-CORE10G-01"
+  # vars:
+  #   CoreRouter: "SPARKS001-CORE-01"
+  #   CoreSwitch: "SPARKS-CORE10G-01"
 
   tasks:
-    - name: Nexus show mac address-table address {{ hostvars[CoreRouter]['device_mac'] }}
+    - name: Nexus show mac address-table address {{ hostvars[hostvars['localhost']['CoreRouter']]['device_mac'] }}
+#     - name: Nexus show mac address-table address {{ hostvars[CoreRouter]['device_mac'] }}
       nxos_command:
         commands:
-        - show mac address-table address {{ hostvars[CoreRouter]['device_mac'] }}
+        - show mac address-table address {{ hostvars[hostvars['localhost']['CoreRouter']]['device_mac'] }}
+#         - show mac address-table address {{ hostvars[hostvars[CoreRouter]['device_mac'] }}
       register: output3
 
     - name: print output
@@ -147,3 +156,4 @@
     - name: print show run interface {{ device_port }}
       ansible.builtin.debug:
         var: output4.stdout_lines
+
